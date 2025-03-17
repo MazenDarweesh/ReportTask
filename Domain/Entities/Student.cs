@@ -8,6 +8,9 @@ public class Student
 {
     public Ulid Id { get; set; } = Ulid.NewUlid();
     public string Name { get; set; }
+    public string MobileNumber { get; set; } 
+    public string Nationality { get; set; } 
+    public string Gender { get; set; } 
 
     public Ulid SchoolId { get; set; }
     public Ulid GradeId { get; set; }
@@ -17,5 +20,5 @@ public class Student
     public School School { get; set; }
     public Grade Grade { get; set; }
     public Classroom Class { get; set; }
-    public Year Year { get; set; }
+    public AcademicYear Year { get; set; }
 }
