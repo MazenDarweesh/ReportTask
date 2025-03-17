@@ -11,14 +11,13 @@ namespace Infrastructure
     public class AppDbContext : DbContext
     {
         public DbSet<Student> Students { get; set; }
+        public DbSet<StudentAcademicYear> StudentAcademicYears { get; set; }
         public DbSet<School> Schools { get; set; }
+        public DbSet<AcademicYear> AcademicYears { get; set; }
+        public DbSet<Semester> Semesters { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<Section> Sections { get; set; }
-        public DbSet<Year> Years { get; set; }
-        public DbSet<Semester> Semesters { get; set; }
-        public DbSet<AcademicYear> AcademicYears { get; set; }
-        public DbSet<StudentAcademicYear> StudentAcademicYears { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -37,78 +36,67 @@ namespace Infrastructure
             modelBuilder.Entity<Grade>().Property(s => s.Id).HasConversion(ulidConverter).ValueGeneratedOnAdd();
             modelBuilder.Entity<Classroom>().Property(s => s.Id).HasConversion(ulidConverter).ValueGeneratedOnAdd();
             modelBuilder.Entity<Section>().Property(s => s.Id).HasConversion(ulidConverter).ValueGeneratedOnAdd();
-            modelBuilder.Entity<Year>().Property(s => s.Id).HasConversion(ulidConverter).ValueGeneratedOnAdd();
             modelBuilder.Entity<Semester>().Property(s => s.Id).HasConversion(ulidConverter).ValueGeneratedOnAdd();
             modelBuilder.Entity<AcademicYear>().Property(s => s.Id).HasConversion(ulidConverter).ValueGeneratedOnAdd();
             modelBuilder.Entity<StudentAcademicYear>().Property(s => s.Id).HasConversion(ulidConverter).ValueGeneratedOnAdd();
 
-            // Apply ULID conversion to foreign keys
-            modelBuilder.Entity<Student>().Property(s => s.SchoolId).HasConversion(ulidConverter);
-            modelBuilder.Entity<Student>().Property(s => s.GradeId).HasConversion(ulidConverter);
-            modelBuilder.Entity<Student>().Property(s => s.ClassId).HasConversion(ulidConverter);
-            modelBuilder.Entity<Student>().Property(s => s.YearId).HasConversion(ulidConverter);
 
-            modelBuilder.Entity<AcademicYear>().Property(a => a.SchoolId).HasConversion(ulidConverter);
-            modelBuilder.Entity<Semester>().Property(s => s.AcademicYearId).HasConversion(ulidConverter);
-            modelBuilder.Entity<Grade>().Property(g => g.SectionId).HasConversion(ulidConverter);
-            modelBuilder.Entity<Classroom>().Property(c => c.GradeId).HasConversion(ulidConverter);
-            modelBuilder.Entity<Classroom>().Property(c => c.AcademicYearId).HasConversion(ulidConverter);
-            modelBuilder.Entity<Section>().Property(s => s.SchoolId).HasConversion(ulidConverter);
+            // Relationships
+            modelBuilder.Entity<StudentAcademicYear>()
+                .HasOne(say => say.Student)
+                .WithMany(s => s.StudentAcademicYears)
+                .HasForeignKey(say => say.StudentId);
 
-            modelBuilder.Entity<StudentAcademicYear>().Property(sa => sa.StudentId).HasConversion(ulidConverter);
-            modelBuilder.Entity<StudentAcademicYear>().Property(sa => sa.SchoolId).HasConversion(ulidConverter);
-            modelBuilder.Entity<StudentAcademicYear>().Property(sa => sa.GradeId).HasConversion(ulidConverter);
-            modelBuilder.Entity<StudentAcademicYear>().Property(sa => sa.ClassId).HasConversion(ulidConverter);
-            modelBuilder.Entity<StudentAcademicYear>().Property(sa => sa.SemesterId).HasConversion(ulidConverter);
+            modelBuilder.Entity<StudentAcademicYear>()
+                .HasOne(say => say.School)
+                .WithMany()
+                .HasForeignKey(say => say.SchoolId);
 
-            // Define Relationships
+            modelBuilder.Entity<StudentAcademicYear>()
+                .HasOne(say => say.Classroom)
+                .WithMany()
+                .HasForeignKey(say => say.ClassroomId);
+
+            modelBuilder.Entity<StudentAcademicYear>()
+                .HasOne(say => say.Grade)
+                .WithMany()
+                .HasForeignKey(say => say.GradeId);
+
+            modelBuilder.Entity<StudentAcademicYear>()
+                .HasOne(say => say.Semester)
+                .WithMany()
+                .HasForeignKey(say => say.SemesterId);
+
+            modelBuilder.Entity<AcademicYear>()
+                .HasOne(ay => ay.School)
+                .WithMany()
+                .HasForeignKey(ay => ay.SchoolId);
+
+            modelBuilder.Entity<Semester>()
+                .HasOne(s => s.AcademicYear)
+                .WithMany()
+                .HasForeignKey(s => s.AcademicYearId);
+
             modelBuilder.Entity<Grade>()
                 .HasOne(g => g.Section)
                 .WithMany()
-                .HasForeignKey(g => g.SectionId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .HasForeignKey(g => g.SectionId);
 
             modelBuilder.Entity<Classroom>()
                 .HasOne(c => c.Grade)
                 .WithMany()
-                .HasForeignKey(c => c.GradeId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .HasForeignKey(c => c.GradeId);
 
             modelBuilder.Entity<Classroom>()
-                .HasOne(c => c.AcademicYear)
+                .HasOne<AcademicYear>()
                 .WithMany()
-                .HasForeignKey(c => c.AcademicYearId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .HasForeignKey(c => c.AcademicYearId);
 
-            modelBuilder.Entity<StudentAcademicYear>()
-                .HasOne(sa => sa.Student)
+            modelBuilder.Entity<Section>()
+                .HasOne(s => s.School)
                 .WithMany()
-                .HasForeignKey(sa => sa.StudentId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .HasForeignKey(s => s.SchoolId);
 
-            modelBuilder.Entity<StudentAcademicYear>()
-                .HasOne(sa => sa.School)
-                .WithMany()
-                .HasForeignKey(sa => sa.SchoolId)
-                .OnDelete(DeleteBehavior.NoAction); 
-
-            modelBuilder.Entity<StudentAcademicYear>()
-                .HasOne(sa => sa.Grade)
-                .WithMany()
-                .HasForeignKey(sa => sa.GradeId)
-                .OnDelete(DeleteBehavior.NoAction); 
-
-            modelBuilder.Entity<StudentAcademicYear>()
-                .HasOne(sa => sa.Class)
-                .WithMany()
-                .HasForeignKey(sa => sa.ClassId)
-                .OnDelete(DeleteBehavior.NoAction); 
-
-            modelBuilder.Entity<StudentAcademicYear>()
-                .HasOne(sa => sa.Semester)
-                .WithMany()
-                .HasForeignKey(sa => sa.SemesterId)
-                .OnDelete(DeleteBehavior.NoAction); 
         }
     }
 }

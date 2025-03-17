@@ -12,13 +12,13 @@ namespace Domain.Entities
 
         public Ulid StudentId { get; set; }
         public Ulid SchoolId { get; set; }
-        public Ulid ClassId { get; set; }
+        public Ulid ClassroomId { get; set; }
         public Ulid GradeId { get; set; }
         public Ulid SemesterId { get; set; }
 
         public Student Student { get; set; }
         public School School { get; set; }
-        public Classroom Class { get; set; }
+        public Classroom Classroom { get; set; }
         public Grade Grade { get; set; }
         public Semester Semester { get; set; }
     }

@@ -10,15 +10,8 @@ public class Student
     public string Name { get; set; }
     public string MobileNumber { get; set; } 
     public string Nationality { get; set; } 
-    public string Gender { get; set; } 
+    public string Gender { get; set; }
 
-    public Ulid SchoolId { get; set; }
-    public Ulid GradeId { get; set; }
-    public Ulid ClassId { get; set; }
-    public Ulid YearId { get; set; }
-
-    public School School { get; set; }
-    public Grade Grade { get; set; }
-    public Classroom Class { get; set; }
-    public AcademicYear Year { get; set; }
+    // Relationship: Many-to-Many via StudentAcademicYear
+    public ICollection<StudentAcademicYear> StudentAcademicYears { get; set; }
 }
