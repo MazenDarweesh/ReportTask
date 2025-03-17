@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories
         public IRepository<Student> Students { get; }
         public IRepository<School> Schools { get; }
         public IRepository<Grade> Grades { get; }
-        public IRepository<Class> Classes { get; }
+        public IRepository<Classroom> Classes { get; }
         public IRepository<Year> Years { get; }
 
         public UnitOfWork(AppDbContext context)
@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories
             Students = new Repository<Student>(_context);
             Schools = new Repository<School>(_context);
             Grades = new Repository<Grade>(_context);
-            Classes = new Repository<Class>(_context);
+            Classes = new Repository<Classroom>(_context);
             Years = new Repository<Year>(_context);
         }
 

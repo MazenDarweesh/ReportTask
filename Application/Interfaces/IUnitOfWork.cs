@@ -12,7 +12,7 @@ namespace Application.Interfaces
         IRepository<Student> Students { get; }
         IRepository<School> Schools { get; }
         IRepository<Grade> Grades { get; }
-        IRepository<Class> Classes { get; }
+        IRepository<Classroom> Classes { get; }
         IRepository<Year> Years { get; }
 
         Task<int> CompleteAsync();

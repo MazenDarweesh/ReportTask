@@ -16,6 +16,6 @@ public class Student
 
     public School School { get; set; }
     public Grade Grade { get; set; }
-    public Class Class { get; set; }
+    public Classroom Class { get; set; }
     public Year Year { get; set; }
 }
