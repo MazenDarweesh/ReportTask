@@ -62,34 +62,53 @@ namespace Infrastructure
             modelBuilder.Entity<StudentAcademicYear>().Property(sa => sa.SemesterId).HasConversion(ulidConverter);
 
             // Define Relationships
+            modelBuilder.Entity<Grade>()
+                .HasOne(g => g.Section)
+                .WithMany()
+                .HasForeignKey(g => g.SectionId)
+                .OnDelete(DeleteBehavior.NoAction); 
+
+            modelBuilder.Entity<Classroom>()
+                .HasOne(c => c.Grade)
+                .WithMany()
+                .HasForeignKey(c => c.GradeId)
+                .OnDelete(DeleteBehavior.NoAction); 
+
+            modelBuilder.Entity<Classroom>()
+                .HasOne(c => c.AcademicYear)
+                .WithMany()
+                .HasForeignKey(c => c.AcademicYearId)
+                .OnDelete(DeleteBehavior.NoAction); 
+
             modelBuilder.Entity<StudentAcademicYear>()
-             .HasOne(sa => sa.Student)
-             .WithMany()
-             .HasForeignKey(sa => sa.StudentId)
-             .OnDelete(DeleteBehavior.NoAction); // Prevent cascade delete
+                .HasOne(sa => sa.Student)
+                .WithMany()
+                .HasForeignKey(sa => sa.StudentId)
+                .OnDelete(DeleteBehavior.NoAction); 
 
             modelBuilder.Entity<StudentAcademicYear>()
                 .HasOne(sa => sa.School)
                 .WithMany()
                 .HasForeignKey(sa => sa.SchoolId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction); 
 
             modelBuilder.Entity<StudentAcademicYear>()
                 .HasOne(sa => sa.Grade)
                 .WithMany()
                 .HasForeignKey(sa => sa.GradeId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction); 
 
             modelBuilder.Entity<StudentAcademicYear>()
                 .HasOne(sa => sa.Class)
                 .WithMany()
                 .HasForeignKey(sa => sa.ClassId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction); 
+
             modelBuilder.Entity<StudentAcademicYear>()
                 .HasOne(sa => sa.Semester)
                 .WithMany()
                 .HasForeignKey(sa => sa.SemesterId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction); 
         }
     }
 }
