@@ -115,7 +115,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("LogoPath")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -123,7 +123,23 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VisionStatement")
+                    b.Property<string>("ReportHeaderOneAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportHeaderOneEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportHeaderTwoAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportHeaderTwoEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -186,17 +202,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ClassId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GradeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MobileNumber")
                         .IsRequired()
@@ -210,23 +218,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SchoolId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("YearId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ClassId");
-
-                    b.HasIndex("GradeId");
-
-                    b.HasIndex("SchoolId");
-
-                    b.HasIndex("YearId");
 
                     b.ToTable("Students");
                 });
@@ -237,7 +229,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ClassId")
+                    b.Property<string>("ClassroomId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -259,7 +251,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClassId");
+                    b.HasIndex("ClassroomId");
 
                     b.HasIndex("GradeId");
 
@@ -272,26 +264,12 @@ namespace Infrastructure.Migrations
                     b.ToTable("StudentAcademicYears");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Year", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("YearValue")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Years");
-                });
-
             modelBuilder.Entity("Domain.Entities.AcademicYear", b =>
                 {
                     b.HasOne("Domain.Entities.School", "School")
                         .WithMany()
                         .HasForeignKey("SchoolId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("School");
@@ -332,7 +310,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.School", "School")
                         .WithMany()
                         .HasForeignKey("SchoolId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("School");
@@ -343,52 +321,17 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.AcademicYear", "AcademicYear")
                         .WithMany()
                         .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("AcademicYear");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Student", b =>
-                {
-                    b.HasOne("Domain.Entities.Classroom", "Class")
-                        .WithMany()
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Grade", "Grade")
-                        .WithMany()
-                        .HasForeignKey("GradeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.School", "School")
-                        .WithMany()
-                        .HasForeignKey("SchoolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.AcademicYear", "Year")
-                        .WithMany()
-                        .HasForeignKey("YearId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Class");
-
-                    b.Navigation("Grade");
-
-                    b.Navigation("School");
-
-                    b.Navigation("Year");
-                });
-
             modelBuilder.Entity("Domain.Entities.StudentAcademicYear", b =>
                 {
-                    b.HasOne("Domain.Entities.Classroom", "Class")
+                    b.HasOne("Domain.Entities.Classroom", "Classroom")
                         .WithMany()
-                        .HasForeignKey("ClassId")
+                        .HasForeignKey("ClassroomId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -411,12 +354,12 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Student", "Student")
-                        .WithMany()
+                        .WithMany("StudentAcademicYears")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Class");
+                    b.Navigation("Classroom");
 
                     b.Navigation("Grade");
 
@@ -425,6 +368,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Semester");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Student", b =>
+                {
+                    b.Navigation("StudentAcademicYears");
                 });
 #pragma warning restore 612, 618
         }

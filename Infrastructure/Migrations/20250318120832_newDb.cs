@@ -6,38 +6,43 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class fixCascademoreerrors : Migration
+    public partial class newDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Students_Classes_ClassId",
-                table: "Students");
+            migrationBuilder.CreateTable(
+                name: "Schools",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReportHeaderOneEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReportHeaderOneAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReportHeaderTwoEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReportHeaderTwoAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReportImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Schools", x => x.Id);
+                });
 
-            migrationBuilder.DropTable(
-                name: "Classes");
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateFrom",
-                table: "Grades",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateTo",
-                table: "Grades",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<string>(
-                name: "SectionId",
-                table: "Grades",
-                type: "nvarchar(450)",
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MobileNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "AcademicYears",
@@ -57,8 +62,7 @@ namespace Infrastructure.Migrations
                         name: "FK_AcademicYears_Schools_SchoolId",
                         column: x => x.SchoolId,
                         principalTable: "Schools",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -76,8 +80,47 @@ namespace Infrastructure.Migrations
                         name: "FK_Sections_Schools_SchoolId",
                         column: x => x.SchoolId,
                         principalTable: "Schools",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Semesters",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AcademicYearId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Semesters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Semesters_AcademicYears_AcademicYearId",
+                        column: x => x.AcademicYearId,
+                        principalTable: "AcademicYears",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Grades",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SectionId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Grades_Sections_SectionId",
+                        column: x => x.SectionId,
+                        principalTable: "Sections",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -106,34 +149,13 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Semesters",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AcademicYearId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Semesters", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Semesters_AcademicYears_AcademicYearId",
-                        column: x => x.AcademicYearId,
-                        principalTable: "AcademicYears",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "StudentAcademicYears",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SchoolId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClassId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClassroomId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GradeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SemesterId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -141,8 +163,8 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_StudentAcademicYears", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StudentAcademicYears_Classrooms_ClassId",
-                        column: x => x.ClassId,
+                        name: "FK_StudentAcademicYears_Classrooms_ClassroomId",
+                        column: x => x.ClassroomId,
                         principalTable: "Classrooms",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -168,11 +190,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Grades_SectionId",
-                table: "Grades",
-                column: "SectionId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AcademicYears_SchoolId",
                 table: "AcademicYears",
                 column: "SchoolId");
@@ -188,6 +205,11 @@ namespace Infrastructure.Migrations
                 column: "GradeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Grades_SectionId",
+                table: "Grades",
+                column: "SectionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sections_SchoolId",
                 table: "Sections",
                 column: "SchoolId");
@@ -198,9 +220,9 @@ namespace Infrastructure.Migrations
                 column: "AcademicYearId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentAcademicYears_ClassId",
+                name: "IX_StudentAcademicYears_ClassroomId",
                 table: "StudentAcademicYears",
-                column: "ClassId");
+                column: "ClassroomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentAcademicYears_GradeId",
@@ -221,37 +243,11 @@ namespace Infrastructure.Migrations
                 name: "IX_StudentAcademicYears_StudentId",
                 table: "StudentAcademicYears",
                 column: "StudentId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Grades_Sections_SectionId",
-                table: "Grades",
-                column: "SectionId",
-                principalTable: "Sections",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Students_Classrooms_ClassId",
-                table: "Students",
-                column: "ClassId",
-                principalTable: "Classrooms",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Grades_Sections_SectionId",
-                table: "Grades");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Students_Classrooms_ClassId",
-                table: "Students");
-
-            migrationBuilder.DropTable(
-                name: "Sections");
-
             migrationBuilder.DropTable(
                 name: "StudentAcademicYears");
 
@@ -262,43 +258,19 @@ namespace Infrastructure.Migrations
                 name: "Semesters");
 
             migrationBuilder.DropTable(
+                name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "Grades");
+
+            migrationBuilder.DropTable(
                 name: "AcademicYears");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Grades_SectionId",
-                table: "Grades");
+            migrationBuilder.DropTable(
+                name: "Sections");
 
-            migrationBuilder.DropColumn(
-                name: "DateFrom",
-                table: "Grades");
-
-            migrationBuilder.DropColumn(
-                name: "DateTo",
-                table: "Grades");
-
-            migrationBuilder.DropColumn(
-                name: "SectionId",
-                table: "Grades");
-
-            migrationBuilder.CreateTable(
-                name: "Classes",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Classes", x => x.Id);
-                });
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Students_Classes_ClassId",
-                table: "Students",
-                column: "ClassId",
-                principalTable: "Classes",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.DropTable(
+                name: "Schools");
         }
     }
 }

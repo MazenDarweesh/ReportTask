@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories
         public IRepository<School> Schools { get; }
         public IRepository<Grade> Grades { get; }
         public IRepository<Classroom> Classes { get; }
-        public IRepository<Year> Years { get; }
+        public IRepository<AcademicYear> AcademicYears { get; }
 
         public UnitOfWork(AppDbContext context)
         {
@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories
             Schools = new Repository<School>(_context);
             Grades = new Repository<Grade>(_context);
             Classes = new Repository<Classroom>(_context);
-            Years = new Repository<Year>(_context);
+            AcademicYears = new Repository<AcademicYear>(_context);
         }
 
         public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();

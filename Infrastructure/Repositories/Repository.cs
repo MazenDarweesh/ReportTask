@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Application.Interfaces;
 namespace Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
