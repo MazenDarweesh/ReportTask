@@ -17,9 +17,9 @@ namespace ReportTask.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetClassrooms([FromQuery] string gradeId, [FromQuery] string academicYearId)
+        public async Task<IActionResult> GetClassrooms()
         {
-            var classrooms = await _classroomService.GetClassroomsAsync(gradeId, academicYearId);
+            var classrooms = await _classroomService.GetClassroomsAsync();
             return Ok(classrooms);
         }
     }

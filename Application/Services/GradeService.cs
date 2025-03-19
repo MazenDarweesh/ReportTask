@@ -1,5 +1,7 @@
 ﻿using Domain.DTOs;
 using Infrastructure;
+using Domain.Utilities;
+
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +22,7 @@ namespace Application.Services
             return await _context.Grades
                 .Select(g => new GradeDTO
                 {
-                    Id = g.Id.ToString(),
+                    Id = g.Id.ConvertFromUlid(),
                     Name = g.Name
                 })
                 .ToListAsync();

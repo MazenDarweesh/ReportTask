@@ -1,4 +1,5 @@
-﻿
+﻿using Domain.Utilities;
+
 using Domain.DTOs;
 using Infrastructure;
 using Infrastructure.Interfaces;
@@ -21,7 +22,7 @@ namespace Application.Services
             return await _context.Schools
                 .Select(s => new SchoolDTO
                 {
-                    Id = s.Id.ToString(),
+                    Id = s.Id.ConvertFromUlid(),
                     Name = s.Name
                 })
                 .ToListAsync();

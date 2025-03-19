@@ -1,4 +1,5 @@
-﻿
+﻿using Domain.Utilities;
+
 using Domain.DTOs;
 using Infrastructure;
 using Infrastructure.Interfaces;
@@ -16,13 +17,12 @@ namespace Application.Services
             _context = context;
         }
 
-        public async Task<List<ClassroomDTO>> GetClassroomsAsync(string gradeId, string academicYearId)
+        public async Task<List<ClassroomDTO>> GetClassroomsAsync()
         {
             return await _context.Classrooms
-                .Where(c => c.GradeId.ToString() == gradeId && c.AcademicYearId.ToString() == academicYearId)
                 .Select(c => new ClassroomDTO
                 {
-                    Id = c.Id.ToString(),
+                    Id = c.Id.ConvertFromUlid(),  
                     Name = c.Name
                 })
                 .ToListAsync();
