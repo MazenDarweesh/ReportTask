@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs
+namespace Domain.DTOs
 {
-    public class ClassroomDTO
+    public class GradeDTO
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -11,4 +11,5 @@ public class Grade
 
     public Ulid SectionId { get; set; }
     public Section Section { get; set; }
+    public ICollection<Classroom> Classrooms { get; set; }
 }

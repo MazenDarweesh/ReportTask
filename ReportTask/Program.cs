@@ -1,8 +1,9 @@
 using Application.Interfaces;
+using Application.Services;
 using Infrastructure;
+using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<ISchoolService, SchoolService>();
+builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
+builder.Services.AddScoped<IGradeService, GradeService>();
+builder.Services.AddScoped<IClassroomService, ClassroomService>();
+
+
+
+
 
 var app = builder.Build();
 

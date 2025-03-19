@@ -11,4 +11,5 @@ public class Classroom
 
     public Ulid AcademicYearId { get; set; }
     public AcademicYear AcademicYear { get; set; }
+
 }
