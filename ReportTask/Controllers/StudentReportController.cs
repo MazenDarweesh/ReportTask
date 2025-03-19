@@ -69,6 +69,7 @@ public class StudentReportController : ControllerBase
     {
         var studentAcademicYears = await GetFilteredStudentAcademicYears(schoolId, yearId, gradeId, classId);
         if (!studentAcademicYears.Any()) return NotFound("No students found.");
+        
 
         using (var stream = new MemoryStream())
         {
@@ -105,6 +106,8 @@ public class StudentReportController : ControllerBase
     {
         var studentAcademicYears = await GetFilteredStudentAcademicYears(schoolId, yearId, gradeId, classId);
         if (!studentAcademicYears.Any()) return NotFound("No students found.");
+
+        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
         using (var package = new ExcelPackage())
         {
