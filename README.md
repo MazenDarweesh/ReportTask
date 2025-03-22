@@ -13,10 +13,15 @@
 
 ## Project Structure
 ReportTask/
+
 ├── Application/
+
 │   ├── Services/
+
 │   │   └── StudentReportService.cs
+
 ├── Domain/
+
 │   ├── Entities/
 │   │   ├── Student.cs
 │   │   ├── StudentAcademicYear.cs
