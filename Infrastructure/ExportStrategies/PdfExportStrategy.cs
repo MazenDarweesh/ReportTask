@@ -15,6 +15,19 @@ namespace Infrastructure.ExportStrategies
             var writer = PdfWriter.GetInstance(document, memoryStream);
             document.Open();
 
+            // Add school headers
+            var school = data.First().School;
+            var schoolHeaderTable = new PdfPTable(1);
+            schoolHeaderTable.AddCell(school.ReportHeaderOneEn);
+            schoolHeaderTable.AddCell(school.ReportHeaderTwoEn);
+            schoolHeaderTable.AddCell(school.ReportImage);
+            schoolHeaderTable.AddCell(school.ReportHeaderOneAr);
+            schoolHeaderTable.AddCell(school.ReportHeaderTwoAr);
+            document.Add(schoolHeaderTable);
+
+            // Add a blank line
+            document.Add(new Paragraph(" "));
+
             // Add class info table
             var classInfoTable = new PdfPTable(3);
             classInfoTable.AddCell("Class:");

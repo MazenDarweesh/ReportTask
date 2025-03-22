@@ -39,10 +39,14 @@ public class StudentReportController : ControllerBase
                                                  [FromQuery] string? gradeId,
                                                  [FromQuery] string? classId)
     {
+        // Get report data
         var (_, rawData) = await _reportService.GetReportData(schoolId, yearId, gradeId, classId);
         if (rawData == null || !rawData.Any()) return NotFound("No students found.");
 
+        // Export report
         var reportBytes = _reportService.ExportReport(format, rawData);
+
+        // Return file
         return File(reportBytes, _reportService.GetContentType(format), _reportService.GetFileName(format));
     }
 }

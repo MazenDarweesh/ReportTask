@@ -16,14 +16,26 @@ namespace Infrastructure.ExportStrategies
                 WriteIndented = true
             };
 
-            var exportData = data.Select((item, index) => new
+            var school = data.First().School;
+            var exportData = new
             {
-                No = index + 1,
-                item.Student.Name,
-                item.Student.MobileNumber,
-                item.Student.Nationality,
-                item.Student.Gender
-            }).ToList();
+                SchoolHeader = new
+                {
+                    school.ReportHeaderOneEn,
+                    school.ReportHeaderTwoEn,
+                    school.ReportImage,
+                    school.ReportHeaderOneAr,
+                    school.ReportHeaderTwoAr
+                },
+                Students = data.Select((item, index) => new
+                {
+                    No = index + 1,
+                    item.Student.Name,
+                    item.Student.MobileNumber,
+                    item.Student.Nationality,
+                    item.Student.Gender
+                }).ToList()
+            };
 
             return JsonSerializer.SerializeToUtf8Bytes(exportData, options);
         }
