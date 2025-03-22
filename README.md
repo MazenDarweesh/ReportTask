@@ -23,29 +23,53 @@ ReportTask/
 ├── Domain/
 
 │   ├── Entities/
+
 │   │   ├── Student.cs
+
 │   │   ├── StudentAcademicYear.cs
+
 │   │   ├── School.cs
+
 │   │   ├── Classroom.cs
+
 │   │   ├── Grade.cs
+
 │   │   ├── Semester.cs
+
 │   │   ├── AcademicYear.cs
+
 │   │   └── Section.cs
+
 │   ├── Enums/
+
 │   │   └── ExportFormat.cs
+
 ├── Infrastructure/
+
 │   ├── ExportStrategies/
+
 │   │   ├── PdfExportStrategy.cs
+
 │   │   ├── ExcelExportStrategy.cs
+
 │   │   └── JsonExportStrategy.cs
+
 │   ├── Interfaces/
+
 │   │   └── IExportStrategy.cs
+
 │   ├── Repositories/
+
 │   │   └── StudentReportRepository.cs
+
 ├── ReportTask/
+
 │   ├── Controllers/
+
 │   │   └── StudentReportController.cs
+
 │   ├── Program.cs
+
 │   └── appsettings.json
 
 
