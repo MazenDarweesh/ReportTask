@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Enums
 {
-    public enum ReportFormat
+    public enum ExportFormat
     {
-        PDF,
-        Excel,
-        Print
+        Json,
+        Pdf,
+        Excel
     }
 }
