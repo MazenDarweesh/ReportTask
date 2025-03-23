@@ -31,6 +31,7 @@ builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<IClassroomService, ClassroomService>();
 
+
 // Add the StudentReportService and its dependencies
 builder.Services.AddStudentReportServices();
 

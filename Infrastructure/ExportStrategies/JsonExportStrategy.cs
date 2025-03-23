@@ -16,24 +16,24 @@ namespace Infrastructure.ExportStrategies
                 WriteIndented = true
             };
 
-            var school = data.First().School;
+            var school = data.FirstOrDefault()?.School;
             var exportData = new
             {
                 SchoolHeader = new
                 {
-                    school.ReportHeaderOneEn,
-                    school.ReportHeaderTwoEn,
-                    school.ReportImage,
-                    school.ReportHeaderOneAr,
-                    school.ReportHeaderTwoAr
+                    ReportHeaderOneEn = school?.ReportHeaderOneEn,
+                    ReportHeaderTwoEn = school?.ReportHeaderTwoEn,
+                    ReportImage = school?.ReportImage,
+                    ReportHeaderOneAr = school?.ReportHeaderOneAr,
+                    ReportHeaderTwoAr = school?.ReportHeaderTwoAr
                 },
                 Students = data.Select((item, index) => new
                 {
                     No = index + 1,
-                    item.Student.Name,
-                    item.Student.MobileNumber,
-                    item.Student.Nationality,
-                    item.Student.Gender
+                    Name = item.Student?.Name,
+                    MobileNumber = item.Student?.MobileNumber,
+                    Nationality = item.Student?.Nationality,
+                    Gender = item.Student?.Gender
                 }).ToList()
             };
 

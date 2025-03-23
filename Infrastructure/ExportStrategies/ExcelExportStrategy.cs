@@ -16,16 +16,16 @@ namespace Infrastructure.ExportStrategies
             var worksheet = package.Workbook.Worksheets.Add("Report");
 
             // Add school headers
-            var school = data.First().School;
-            worksheet.Cells[1, 1].Value = school.ReportHeaderOneEn;
-            worksheet.Cells[2, 1].Value = school.ReportHeaderTwoEn;
-            worksheet.Cells[3, 1].Value = school.ReportImage;
-            worksheet.Cells[4, 1].Value = school.ReportHeaderOneAr;
-            worksheet.Cells[5, 1].Value = school.ReportHeaderTwoAr;
+            var school = data.FirstOrDefault()?.School;
+            worksheet.Cells[1, 1].Value = school?.ReportHeaderOneEn ?? string.Empty;
+            worksheet.Cells[2, 1].Value = school?.ReportHeaderTwoEn ?? string.Empty;
+            worksheet.Cells[3, 1].Value = school?.ReportImage ?? string.Empty;
+            worksheet.Cells[4, 1].Value = school?.ReportHeaderOneAr ?? string.Empty;
+            worksheet.Cells[5, 1].Value = school?.ReportHeaderTwoAr ?? string.Empty;
 
             // Add class info
             worksheet.Cells[7, 1].Value = "Class:";
-            worksheet.Cells[7, 2].Value = data.First().Classroom.Name;
+            worksheet.Cells[7, 2].Value = data.FirstOrDefault()?.Classroom?.Name ?? string.Empty;
             worksheet.Cells[7, 3].Value = "Number of Students:";
             worksheet.Cells[7, 4].Value = data.Count;
             worksheet.Cells[7, 5].Value = "Date:";
@@ -44,10 +44,10 @@ namespace Infrastructure.ExportStrategies
             foreach (var item in data)
             {
                 worksheet.Cells[row, 1].Value = index;
-                worksheet.Cells[row, 2].Value = item.Student.Name;
-                worksheet.Cells[row, 3].Value = item.Student.MobileNumber;
-                worksheet.Cells[row, 4].Value = item.Student.Nationality;
-                worksheet.Cells[row, 5].Value = item.Student.Gender;
+                worksheet.Cells[row, 2].Value = item.Student?.Name ?? string.Empty;
+                worksheet.Cells[row, 3].Value = item.Student?.MobileNumber ?? string.Empty;
+                worksheet.Cells[row, 4].Value = item.Student?.Nationality ?? string.Empty;
+                worksheet.Cells[row, 5].Value = item.Student?.Gender ?? string.Empty;
                 row++;
                 index++;
             }

@@ -16,13 +16,13 @@ namespace Infrastructure.ExportStrategies
             document.Open();
 
             // Add school headers
-            var school = data.First().School;
+            var school = data.FirstOrDefault()?.School;
             var schoolHeaderTable = new PdfPTable(1);
-            schoolHeaderTable.AddCell(school.ReportHeaderOneEn);
-            schoolHeaderTable.AddCell(school.ReportHeaderTwoEn);
-            schoolHeaderTable.AddCell(school.ReportImage);
-            schoolHeaderTable.AddCell(school.ReportHeaderOneAr);
-            schoolHeaderTable.AddCell(school.ReportHeaderTwoAr);
+            schoolHeaderTable.AddCell(school?.ReportHeaderOneEn ?? string.Empty);
+            schoolHeaderTable.AddCell(school?.ReportHeaderTwoEn ?? string.Empty);
+            schoolHeaderTable.AddCell(school?.ReportImage ?? string.Empty);
+            schoolHeaderTable.AddCell(school?.ReportHeaderOneAr ?? string.Empty);
+            schoolHeaderTable.AddCell(school?.ReportHeaderTwoAr ?? string.Empty);
             document.Add(schoolHeaderTable);
 
             // Add a blank line
@@ -33,7 +33,7 @@ namespace Infrastructure.ExportStrategies
             classInfoTable.AddCell("Class:");
             classInfoTable.AddCell("Number of Students:");
             classInfoTable.AddCell("Date:");
-            classInfoTable.AddCell(data.First().Classroom.Name);
+            classInfoTable.AddCell(data.FirstOrDefault()?.Classroom?.Name ?? string.Empty);
             classInfoTable.AddCell(data.Count.ToString());
             classInfoTable.AddCell(DateTime.UtcNow.ToString("yyyy-MM-dd"));
             document.Add(classInfoTable);
@@ -53,10 +53,10 @@ namespace Infrastructure.ExportStrategies
             foreach (var item in data)
             {
                 table.AddCell(index.ToString());
-                table.AddCell(item.Student.Name);
-                table.AddCell(item.Student.MobileNumber);
-                table.AddCell(item.Student.Nationality);
-                table.AddCell(item.Student.Gender);
+                table.AddCell(item.Student?.Name ?? string.Empty);
+                table.AddCell(item.Student?.MobileNumber ?? string.Empty);
+                table.AddCell(item.Student?.Nationality ?? string.Empty);
+                table.AddCell(item.Student?.Gender ?? string.Empty);
                 index++;
             }
 
