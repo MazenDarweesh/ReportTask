@@ -9,20 +9,20 @@ namespace Application.Services
 {
     public class StudentReportService : IStudentReportService
     {
-        private readonly AppDbContext _context;
+        private readonly IStudentReportRepository _studentReportRepository;
         private readonly Dictionary<ExportFormat, IExportStrategy> _exportStrategies;
 
         public StudentReportService(
-            AppDbContext context,
+            IStudentReportRepository studentReportRepository,
             IDictionary<ExportFormat, IExportStrategy> exportStrategies)
         {
-            _context = context;
+            _studentReportRepository = studentReportRepository;
             _exportStrategies = new Dictionary<ExportFormat, IExportStrategy>(exportStrategies);
         }
 
         public async Task<(object? reportData, List<StudentAcademicYear>? rawData)> GetReportData(string? schoolId, string? yearId, string? gradeId, string? classId)
         {
-            var studentAcademicYears = await GetFilteredStudentAcademicYears(schoolId, yearId, gradeId, classId);
+            var studentAcademicYears = await _studentReportRepository.GetFilteredStudentAcademicYearsAsync(schoolId, yearId, gradeId, classId);
             if (!studentAcademicYears.Any()) return (null, null);
 
             var groupedData = studentAcademicYears
@@ -89,24 +89,5 @@ namespace Application.Services
 
             return exportStrategy.Export(data);
         }
-
-        // This could be replaced with a stored procedure call
-        private async Task<List<StudentAcademicYear>> GetFilteredStudentAcademicYears(string? schoolId, string? yearId,
-                                                                                  string? gradeId, string? classId)
-        {
-            return await _context.StudentAcademicYears
-                .Include(say => say.Student)
-                .Include(say => say.School)
-                .Include(say => say.Classroom)
-                .Include(say => say.Grade)
-                .Include(say => say.Semester)
-                .Where(say =>
-                    (string.IsNullOrEmpty(schoolId) || say.SchoolId.ToString() == schoolId) &&
-                    (string.IsNullOrEmpty(yearId) || say.Semester.AcademicYearId.ToString() == yearId) &&
-                    (string.IsNullOrEmpty(gradeId) || say.GradeId.ToString() == gradeId) &&
-                    (string.IsNullOrEmpty(classId) || say.ClassroomId.ToString() == classId))
-                .ToListAsync();
-        }
-
     }
 }
