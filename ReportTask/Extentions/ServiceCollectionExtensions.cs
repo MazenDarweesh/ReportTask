@@ -49,6 +49,7 @@ namespace ReportTask.Extentions
             services.AddScoped<IGradeService, GradeService>();
             services.AddScoped<IClassroomService, ClassroomService>();
             services.AddScoped<IStudentReportService, StudentReportService>();
+
             return services;
         }
 

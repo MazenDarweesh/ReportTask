@@ -10,5 +10,6 @@ namespace Application.Interfaces
     public interface IStudentReportRepository
     {
         Task<List<StudentAcademicYear>> GetFilteredStudentAcademicYearsAsync(string? schoolId, string? yearId, string? gradeId, string? classId);
+        Task<List<StudentAcademicYear>> GetFilteredStudentAcademicYearsFromSPAsync(string? schoolId, string? yearId, string? gradeId, string? classId);
     }
 }
